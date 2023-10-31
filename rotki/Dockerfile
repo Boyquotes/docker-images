@@ -20,26 +20,14 @@ RUN rm /bin/sh && ln -s /bin/bash /bin/sh
 # update the repository sources list
 # and install dependencies
 RUN apt-get update \
-&& apt-get install -y curl git \
+&& apt-get install -y curl git nano \
 && apt-get -y autoclean
 
-#PYENV
-RUN apt-get install -y make build-essential libssl-dev zlib1g-dev \
-libbz2-dev libreadline-dev libsqlite3-dev wget curl llvm \
-libncursesw5-dev xz-utils tk-dev libxml2-dev libxmlsec1-dev libffi-dev
-RUN curl https://pyenv.run | bash
-RUN echo 'export PYENV_ROOT="$HOME/.pyenv"' >> ~/.bashrc
-RUN echo 'command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"' >> ~/.bashrc
-RUN echo 'eval "$(pyenv init -)"' >> ~/.bashrc
-RUN source ~/.bashrc && pyenv install -v 3.10
-RUN pyenv global 3.10
-RUN pyenv shell 3.10
-
-
 #PYTHON
-RUN apt-get install build-essential software-properties-common -y
-RUN add-apt-repository ppa:deadsnakes/ppa
-RUN apt update && apt-get install -y python3.11 python3-pip
+#RUN apt-get install build-essential software-properties-common -y
+#RUN add-apt-repository ppa:deadsnakes/ppa
+#RUN apt update && apt-get install -y python3.11 python3-pip
+RUN apt update && apt-get install -y python3 python3-pip
 
 # install nvm
 # https://github.com/creationix/nvm#install-script
@@ -59,16 +47,21 @@ ENV PATH $NVM_DIR/versions/node/v$NODE_VERSION/bin:$PATH
 RUN node -v
 RUN npm -v
 
-COPY . /app
+#COPY . /app
 
-WORKDIR /app/frontend/
+WORKDIR /app/
+RUN git clone https://github.com/rotki/rotki.git .
 
-# RUN npm install -g pnpm@8 && pnpm install --no-optional --frozen-lockfile
+WORKDIR /app/frontend
+RUN npm install -g pnpm@8 && pnpm install --no-optional --frozen-lockfile
 
 # RUN apt install -y python3-virtualenvwrapper
+ WORKDIR /app/
 # COPY ./requirements.txt /app/requirements.txt
-# WORKDIR /app/
-# RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements.txt
+RUN pip3 install -r requirements_dev.txt
+RUN pip3 install virtualenvwrapper && export WORKON_HOME=$HOME/.virtualenvs && export PROJECT_HOME=$HOME/Devel
+# && source /usr/local/bin/virtualenvwrapper.sh > /dev/null && mkvirtualenv rotki -p /usr/bin/python3.10
 
 # ARG REVISION
 # ARG ROTKI_VERSION
@@ -77,9 +70,9 @@ WORKDIR /app/frontend/
 # nvm environment variables
 VOLUME ["/data", "/logs", "/config"]
 
-EXPOSE 80
+EXPOSE 8080
 
 # CMD ["pnpm run dev"]
-# CMD ["pnpm run dev:web"]
+CMD ["pnpm run dev:web"]
 
 # HEALTHCHECK CMD curl --fail http://localhost/api/1/ping || exit 1
