@@ -7,6 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Set Python and Pip versions
 ENV PYTHON_VERSION=3.10.10
 ENV PYTHON_PIP_VERSION=21.3.1
+ENV VIRTUALENVWRAPPER_PYTHON=/usr/bin/python3
 
 # nvm environment variables
 ENV NVM_DIR /usr/local/nvm
@@ -56,13 +57,12 @@ WORKDIR /app/frontend
 RUN npm install -g pnpm@8 && pnpm install --no-optional --frozen-lockfile
 
 # RUN apt install -y python3-virtualenvwrapper
- WORKDIR /app/
+WORKDIR /app/
 # COPY ./requirements.txt /app/requirements.txt
 RUN pip3 install -r requirements.txt
 RUN pip3 install -r requirements_dev.txt
-RUN pip3 install virtualenvwrapper && export WORKON_HOME=$HOME/.virtualenvs && export PROJECT_HOME=$HOME/Devel
-# && source /usr/local/bin/virtualenvwrapper.sh > /dev/null && mkvirtualenv rotki -p /usr/bin/python3.10
-
+RUN pip3 install virtualenvwrapper && export WORKON_HOME=$HOME/.virtualenvs && export PROJECT_HOME=$HOME/Devel && source /usr/local/bin/virtualenvwrapper.sh > /dev/null && mkvirtualenv rotki -p /usr/bin/python3.10
+RUN echo "WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc && echo "PROJECT_HOME=$HOME/Devel" >> ~/.bashrc && echo ". /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
 # ARG REVISION
 # ARG ROTKI_VERSION
 # ENV REVISION=$REVISION
@@ -71,8 +71,10 @@ RUN pip3 install virtualenvwrapper && export WORKON_HOME=$HOME/.virtualenvs && e
 VOLUME ["/data", "/logs", "/config"]
 
 EXPOSE 8080
+WORKDIR /app/frontend/
 
 # CMD ["pnpm run dev"]
-CMD ["pnpm run dev:web"]
+CMD ["workon rotki && pnpm run dev:web"]
+# CMD ["tail", "-f", "/dev/null"]
 
 # HEALTHCHECK CMD curl --fail http://localhost/api/1/ping || exit 1
