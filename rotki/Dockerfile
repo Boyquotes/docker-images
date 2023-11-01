@@ -51,7 +51,9 @@ RUN npm -v
 #COPY . /app
 
 WORKDIR /app/
-RUN git clone https://github.com/rotki/rotki.git .
+# RUN git clone https://github.com/rotki/rotki.git .
+RUN git clone https://github.com:Boyquotes/rotki.git .
+RUN git checkout develop
 
 WORKDIR /app/frontend
 RUN npm install -g pnpm@8 && pnpm install --no-optional --frozen-lockfile
@@ -63,6 +65,7 @@ RUN pip3 install -r requirements.txt
 RUN pip3 install -r requirements_dev.txt
 RUN pip3 install virtualenvwrapper && export WORKON_HOME=$HOME/.virtualenvs && export PROJECT_HOME=$HOME/Devel && source /usr/local/bin/virtualenvwrapper.sh > /dev/null && mkvirtualenv rotki -p /usr/bin/python3.10
 RUN echo "WORKON_HOME=$HOME/.virtualenvs" >> ~/.bashrc && echo "PROJECT_HOME=$HOME/Devel" >> ~/.bashrc && echo ". /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+RUN pip3 install -e .
 # ARG REVISION
 # ARG ROTKI_VERSION
 # ENV REVISION=$REVISION
@@ -73,8 +76,13 @@ VOLUME ["/data", "/logs", "/config"]
 EXPOSE 8080
 WORKDIR /app/frontend/
 
+COPY entrypoint.sh /app/
 # CMD ["pnpm run dev"]
-CMD ["workon rotki && pnpm run dev:web"]
-# CMD ["tail", "-f", "/dev/null"]
+# CMD ["source /usr/local/bin/virtualenvwrapper.sh && workon rotki && pnpm run dev:web"]
+# CMD [".", "/usr/local/bin/virtualenvwrapper.sh"]
+#ENTRYPOINT ["/bin/bash", "/app/entrypoint.sh"]
+#CMD ["/bin/bash", "-c", "ls", "-l"]
+# && workon rotki && pnpm run dev:web"]
+CMD ["tail", "-f", "/dev/null"]
 
 # HEALTHCHECK CMD curl --fail http://localhost/api/1/ping || exit 1
