@@ -73,7 +73,7 @@ RUN pip3 install -e .
 # nvm environment variables
 VOLUME ["/data", "/logs", "/config"]
 
-EXPOSE 8080
+EXPOSE 8080 4242
 WORKDIR /app/frontend/
 
 COPY entrypoint.sh /app/
