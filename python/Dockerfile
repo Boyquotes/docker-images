@@ -4,7 +4,7 @@ FROM ubuntu:22.04
 # for package configuration
 WORKDIR /usr/src/cache
 
-ENV PYTHON_VERSION = 3.11
+ENV PYTHON_VERSION=3.11
 ENV DEBIAN_FRONTEND noninteractive
 
 # Update apt packages
@@ -21,11 +21,11 @@ RUN add-apt-repository ppa:deadsnakes/ppa
 RUN apt update && apt-get install -y python3.11
 
 # Make python PYTHON_VERSION the default
-#RUN echo "alias python=python${PYTHON_VERSION}" >> ~/.bashrc
-#RUN export PATH=${PATH}:/usr/bin/python${PYTHON_VERSION}
-#RUN /bin/bash -c "source ~/.bashrc"
+RUN echo "alias python=python${PYTHON_VERSION}" >> ~/.bashrc
+RUN export PATH=${PATH}:/usr/bin/python${PYTHON_VERSION}
+RUN /bin/bash -c "source ~/.bashrc"
 
 # Install pip
-#RUN apt install python3-pip -y
-#RUN python -m pip install --upgrade pip
+RUN apt install python3-pip -y
+RUN python${PYTHON_VERSION} -m pip install --upgrade pip
 
