@@ -16,3 +16,6 @@
 [submodule "symfony/symfony/symfony-docker-6.3.8"]
 	path = symfony/symfony/symfony-docker-6.3.8
 	url = https://github.com/damien-louis/symfony-docker.git
+[submodule "symfony/symfony/shop-system"]
+	path = symfony/symfony/shop-system
+	url = https://github.com/maciekiwaniuk/shop-system.git
