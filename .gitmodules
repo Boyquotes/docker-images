@@ -13,3 +13,6 @@
 [submodule "symfony/symfony-docker-6-CI-CD"]
 	path = symfony/symfony-docker-6-CI-CD
 	url = https://github.com/alejandro-yakovlev/symfony-docker.git
+[submodule "symfony/symfony/symfony-docker-6.3.8"]
+	path = symfony/symfony/symfony-docker-6.3.8
+	url = https://github.com/damien-louis/symfony-docker.git
