@@ -1,0 +1,15 @@
+[submodule "symfony-docker"]
+	path = symfony/symfony-docker
+	url = https://github.com/dunglas/symfony-docker.git
+[submodule "symfony-docker-6.2"]
+	path = symfony/symfony-docker-6.2
+	url = https://github.com/ger86/symfony-docker.git
+[submodule "laradock"]
+	path = laravel/laradock
+	url = https://github.com/laradock/laradock.git
+[submodule "symfony/symfony-docker-6"]
+	path = symfony/symfony-docker-6
+	url = https://github.com/coloso/symfony-docker.git
+[submodule "symfony/symfony-docker-6-CI-CD"]
+	path = symfony/symfony-docker-6-CI-CD
+	url = https://github.com/alejandro-yakovlev/symfony-docker.git
