@@ -5,7 +5,7 @@
 	path = symfony/symfony-docker-6.2
 	url = https://github.com/ger86/symfony-docker.git
 [submodule "laradock"]
-	path = laravel/laradock
+	path = laradock
 	url = https://github.com/laradock/laradock.git
 [submodule "symfony/symfony-docker-6"]
 	path = symfony/symfony-docker-6
@@ -19,3 +19,6 @@
 [submodule "symfony/symfony/shop-system"]
 	path = symfony/symfony/shop-system
 	url = https://github.com/maciekiwaniuk/shop-system.git
+[submodule "sylius/sylius-showcase-docker"]
+	path = sylius/sylius-showcase-docker
+	url = https://github.com/mourats/sylius-showcase-docker
